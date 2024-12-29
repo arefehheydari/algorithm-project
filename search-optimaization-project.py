@@ -20,6 +20,18 @@ def linear_search(data, target):
     return -1
 
 
+# Hash Table
+def create_hash_table(data):
+    hash_table = {}
+    for i, item in enumerate(data):
+        hash_table[item] = i
+    return hash_table
+
+def hash_table_search(hash_table, target):
+    return hash_table.get(target, -1)
+
+
+
 
 # Load data from the file
 def load_data(file_path):
