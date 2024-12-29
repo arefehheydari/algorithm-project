@@ -1,3 +1,18 @@
+# Implementation of Various Search Algorithms with Analysis and Output Saving
+
+import time
+import matplotlib.pyplot as plt
+import csv
+from bitarray import bitarray
+from hashlib import sha256
+
+# Linear Search
+def linear_search(data, target):
+    for i, item in enumerate(data):
+        if item == target:
+            return i
+    return -1
+
 # Binary Search
 def binary_search(data, target):
     left, right = 0, len(data) - 1
@@ -11,15 +26,6 @@ def binary_search(data, target):
             right = mid - 1
     return -1
 
-
-# Linear Search
-def linear_search(data, target):
-    for i, item in enumerate(data):
-        if item == target:
-            return i
-    return -1
-
-
 # Hash Table
 def create_hash_table(data):
     hash_table = {}
@@ -29,7 +35,6 @@ def create_hash_table(data):
 
 def hash_table_search(hash_table, target):
     return hash_table.get(target, -1)
-
 
 # Binary Search Tree
 class TreeNode:
@@ -54,7 +59,6 @@ def search_tree(root, target):
         return search_tree(root.left, target)
     return search_tree(root.right, target)
 
-
 # Bloom Filter
 class BloomFilter:
     def __init__(self, size, hash_count):
@@ -77,9 +81,15 @@ class BloomFilter:
 
     def hash(self, item, seed):
         return int(sha256((str(item) + str(seed)).encode()).hexdigest(), 16) % self.size
-    
 
-    # Generate Analysis and Save Results
+# Measure Execution Time
+def measure_time(func, *args):
+    start_time = time.perf_counter()
+    result = func(*args)
+    end_time = time.perf_counter()
+    return result, end_time - start_time
+
+# Generate Analysis and Save Results
 def analyze_algorithms(data, targets):
     results = []
     linear_times, binary_times, hash_times, bst_times, bloom_times = [], [], [], [], []
@@ -133,8 +143,7 @@ def analyze_algorithms(data, targets):
         writer.writerow(['Target', 'Linear Search Time', 'Binary Search Time', 'Hash Table Time', 'BST Time', 'Bloom Filter Time'])
         writer.writerows(results)
 
-
-        # Plot results
+    # Plot results
     plt.figure(figsize=(10, 6))
     plt.plot(targets, linear_times, label='Linear Search', marker='o')
     plt.plot(targets, binary_times, label='Binary Search', marker='s')
@@ -150,17 +159,15 @@ def analyze_algorithms(data, targets):
     plt.savefig('algorithm_comparison.png')
     plt.show()
 
-
-
 # Load data from the file
 def load_data(file_path):
     with open(file_path, 'r') as file:
         data = file.read().splitlines()
     return data
 
+# Example usage
 file_path = 'usernames.txt'
 data = load_data(file_path)
-print(f"Loaded {len(data)} usernames from the database.")
-
+targets = data[:10]  # Example: use the first 10 entries as targets
 
 analyze_algorithms(data, targets)
