@@ -55,6 +55,31 @@ def search_tree(root, target):
     return search_tree(root.right, target)
 
 
+# Bloom Filter
+class BloomFilter:
+    def __init__(self, size, hash_count):
+        self.size = size
+        self.hash_count = hash_count
+        self.bit_array = bitarray(size)
+        self.bit_array.setall(0)
+
+    def add(self, item):
+        for i in range(self.hash_count):
+            index = self.hash(item, i)
+            self.bit_array[index] = 1
+
+    def check(self, item):
+        for i in range(self.hash_count):
+            index = self.hash(item, i)
+            if self.bit_array[index] == 0:
+                return False
+        return True
+
+    def hash(self, item, seed):
+        return int(sha256((str(item) + str(seed)).encode()).hexdigest(), 16) % self.size
+
+
+
 # Load data from the file
 def load_data(file_path):
     with open(file_path, 'r') as file:
