@@ -134,6 +134,23 @@ def analyze_algorithms(data, targets):
         writer.writerows(results)
 
 
+        # Plot results
+    plt.figure(figsize=(10, 6))
+    plt.plot(targets, linear_times, label='Linear Search', marker='o')
+    plt.plot(targets, binary_times, label='Binary Search', marker='s')
+    plt.plot(targets, hash_times, label='Hash Table Search', marker='^')
+    plt.plot(targets, bst_times, label='Binary Search Tree', marker='d')
+    plt.plot(targets, bloom_times, label='Bloom Filter', marker='x')
+
+    plt.xlabel('Targets')
+    plt.ylabel('Time (seconds)')
+    plt.title('Algorithm Performance Comparison')
+    plt.legend()
+    plt.grid(True)
+    plt.savefig('algorithm_comparison.png')
+    plt.show()
+
+
 
 # Load data from the file
 def load_data(file_path):
